@@ -6,3 +6,4 @@
 - [苏轼行迹图](https://pippobenben57-cmd.github.io/sushi/)
 - [王阳明行迹图](https://pippobenben57-cmd.github.io/yangming/)
 - [曾国藩行迹图](https://pippobenben57-cmd.github.io/zengguofan/)
+- [周易](https://pippobenben57-cmd.github.io/zhouyi/)
