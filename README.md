@@ -8,3 +8,4 @@
 - [曾国藩行迹图](https://pippobenben57-cmd.github.io/zengguofan/)
 - [周易](https://pippobenben57-cmd.github.io/zhouyi/)
 - [道德经](https://pippobenben57-cmd.github.io/daodejing/)
+- [巴菲特 · 滚雪球](https://pippobenben57-cmd.github.io/buffett/)
