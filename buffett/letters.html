@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="巴菲特历年致股东信逐年要点，1965 年至今。编者概括，不是原文。">
+<title>历年股东信 · 巴菲特 — 渊默的学习小院</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+/* 这一页自己的版式：一年一行的账页 */
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--song);font-size:17px;line-height:1.85;padding:0 16px 72px}
+.lw{max-width:980px;margin-inline:auto}
+.lw header{padding:28px 0 16px;border-bottom:3px double var(--ink)}
+.lw .back{font-size:.84rem;color:var(--soft);text-decoration:none}
+.lw h1{font-family:var(--kai);font-weight:400;font-size:clamp(1.9rem,5.5vw,2.8rem);margin:10px 0 0;letter-spacing:.04em}
+.lw .lede{color:var(--soft);max-width:44em;margin:8px 0 0;font-size:.96rem}
+.lw .warn{font-size:.84rem;color:var(--soft);border-left:3px solid var(--red);padding:2px 0 2px 10px;max-width:46em;margin:12px 0 0}
+.bar{position:sticky;top:0;background:var(--paper);z-index:3;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);margin-bottom:8px}
+.bar a{font-family:var(--en);font-size:.9rem;color:var(--soft);text-decoration:none;font-variant-numeric:tabular-nums}
+.bar a:hover{color:var(--red)}
+.bar .sp{flex:1}
+.bar input{font:inherit;font-size:.9rem;background:var(--sheet);color:var(--ink);border:1px solid var(--rule);padding:4px 10px;width:min(220px,100%);border-radius:0}
+.bar button{font:inherit;font-size:.86rem;color:var(--red);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+@media(max-width:640px){.bar{position:static}}
+h2.dec{font-family:var(--kai);font-weight:400;font-size:1.3rem;margin:34px 0 4px;color:var(--red);scroll-margin-top:64px}
+details.yr{border-bottom:1px solid var(--rule)}
+details.yr summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:0 10px;padding:9px 0}
+details.yr summary::-webkit-details-marker{display:none}
+details.yr summary:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+details.yr .y{font-family:var(--en);font-size:1.05rem;color:var(--red);font-variant-numeric:tabular-nums}
+details.yr .th{color:var(--ink)}
+details.yr .by{display:block;font-size:.8rem;color:var(--faint)}
+.pts{display:grid;grid-template-columns:7em minmax(0,1fr);gap:0 12px;padding:0 0 12px 5.2em;font-size:.95rem}
+.pts>div{padding:6px 0;border-top:1px dotted var(--rule)}
+.pts .k{font-family:var(--kai);color:var(--soft)}
+@media(max-width:640px){.pts{grid-template-columns:minmax(0,1fr);padding-left:0}.pts .k{border-top:1px dotted var(--rule);padding-bottom:0}.pts .k+div{border-top:0;padding-top:0}}
+mark{background:var(--red-soft);color:inherit}
+.lw footer{margin-top:48px;padding-top:14px;border-top:1px solid var(--rule);font-size:.8rem;color:var(--faint)}
+.empty{color:var(--soft);padding:20px 0}
+</style>
+</head>
+<body>
+<div class="lw">
+<header>
+  <a class="back" href="./">← 巴菲特 · 滚雪球</a>
+  <h1>历年股东信</h1>
+  <p class="lede">1965 年巴菲特取得伯克希尔的控制权，此后每年一封致股东信。下面一年一条，先是一句话的主题，点开是那一年的几条要点。</p>
+  <p class="warn">这是编者的概括，不是原文，也不是译文。每一封都对照公开流传的中文整理稿读过后再写；数字照整理稿转述，引用请以伯克希尔官网的英文原信为准。</p>
+</header>
+<div class="bar" id="bar"><span class="sp"></span><button type="button" id="all">全部展开</button><input id="q" type="search" placeholder="搜：盖可、回购、通胀……" aria-label="搜索股东信要点"></div>
+<main id="list"></main>
+<p id="note" class="warn"></p>
+<footer>
+  <p>原信见 <a href="https://www.berkshirehathaway.com/letters/letters.html">伯克希尔·哈撒韦官网</a>。本页由 AI（Claude）整理，未经人工校对。核对时参考了中文资料站 buffett.ayaseeri.com 收录的文本，没有转载它的译文或解读文章。</p>
+</footer>
+</div>
+<script src="letters1.js"></script>
+<script src="letters2.js"></script>
+<script>
+"use strict";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L=window.LETTERS||[],list=document.getElementById("list"),bar=document.getElementById("bar"),q=document.getElementById("q");
+const yearOf=d=>parseInt(d.y,10);
+function hl(t,s){if(!s)return esc(t);const i=t.indexOf(s);return i<0?esc(t):esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+s.length))+"</mark>"+hl(t.slice(i+s.length),s)}
+function draw(s){
+  let h="",dec=null,n=0;
+  for(const d of L){
+    const text=d.th+d.pts.map(p=>p.join("")).join("");
+    if(s&&!text.includes(s)&&!String(d.y).includes(s))continue;
+    n++;const k=Math.floor(yearOf(d)/10)*10;
+    if(k!==dec){dec=k;h+=`<h2 class="dec" id="d${k}">${k} 年代</h2>`}
+    h+=`<details class="yr"${s?" open":""}><summary><span class="y">${esc(d.label||d.y)}</span><span><span class="th">${hl(d.th,s)}</span>${d.by?`<span class="by">${esc(d.by)}</span>`:""}</span></summary><div class="pts">${d.pts.map(p=>`<div class="k">${hl(p[0],s)}</div><div>${hl(p[1],s)}</div>`).join("")}</div></details>`;
+  }
+  list.innerHTML=n?h:`<p class="empty">没有找到，换个词试试。</p>`;
+}
+const decs=[...new Set(L.map(d=>Math.floor(yearOf(d)/10)*10))];
+bar.insertAdjacentHTML("afterbegin",decs.map(k=>`<a href="#d${k}">${k}s</a>`).join(""));
+document.getElementById("note").textContent=window.LETTERS_NOTE||"";
+if(!window.LETTERS_NOTE)document.getElementById("note").hidden=true;
+q.addEventListener("input",()=>draw(q.value.trim()));
+document.getElementById("all").addEventListener("click",e=>{const ds=[...document.querySelectorAll("details.yr")],o=ds.some(d=>!d.open);ds.forEach(d=>d.open=o);e.target.textContent=o?"全部收起":"全部展开"});
+draw("");
+</script>
+</body>
+</html>
