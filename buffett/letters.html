@@ -39,6 +39,10 @@ details.yr .by{display:block;font-size:.8rem;color:var(--faint)}
 mark{background:var(--red-soft);color:inherit}
 .lw footer{margin-top:48px;padding-top:14px;border-top:1px solid var(--rule);font-size:.8rem;color:var(--faint)}
 .empty{color:var(--soft);padding:20px 0}
+.pts .src{grid-column:1/-1;border-top:1px dotted var(--rule);padding:8px 0 0;font-size:.88rem}
+.pts .src a{color:var(--red)}
+.pts .src span{color:var(--faint)}
+@media(max-width:640px){.pts .src{border-top:1px dotted var(--rule)}}
 </style>
 </head>
 <body>
@@ -47,7 +51,7 @@ mark{background:var(--red-soft);color:inherit}
   <a class="back" href="./">← 巴菲特 · 滚雪球</a>
   <h1>历年股东信</h1>
   <p class="lede">1965 年巴菲特取得伯克希尔的控制权，此后每年一封致股东信。下面一年一条，先是一句话的主题，点开是那一年的几条要点。</p>
-  <p class="warn">这是编者的概括，不是原文，也不是译文。每一封都对照公开流传的中文整理稿读过后再写；数字照整理稿转述，引用请以伯克希尔官网的英文原信为准。</p>
+  <p class="warn">股东信全文受版权保护，本页不转载全文和全文译文。每一年点开后，最下方有伯克希尔官网英文原信的直达链接（1977 年起）。下面是编者的概括，不是原文，也不是译文。每一封都对照公开流传的中文整理稿读过后再写；数字照整理稿转述，引用请以伯克希尔官网的英文原信为准。</p>
 </header>
 <div class="bar" id="bar"><span class="sp"></span><button type="button" id="all">全部展开</button><input id="q" type="search" placeholder="搜：盖可、回购、通胀……" aria-label="搜索股东信要点"></div>
 <main id="list"></main>
@@ -63,6 +67,13 @@ mark{background:var(--red-soft);color:inherit}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const L=window.LETTERS||[],list=document.getElementById("list"),bar=document.getElementById("bar"),q=document.getElementById("q");
 const yearOf=d=>parseInt(d.y,10);
+const BRK="https://www.berkshirehathaway.com/";
+function orig(d){const y=yearOf(d);
+  if(d.label&&/11 月/.test(d.label))return [BRK+"news/nov1025.pdf","感恩节致股东信英文原文（伯克希尔官网新闻稿）"];
+  if(d.label&&/9 月/.test(d.label))return [BRK+"news/sep1826.pdf","伯克希尔官网新闻稿（英文）"];
+  if(y>=1977&&y<=2003)return [BRK+"letters/"+y+".html",y+" 年致股东信英文全文（伯克希尔官网）"];
+  if(y>=2004&&y<=2024)return [BRK+"letters/"+y+"ltr.pdf",y+" 年致股东信英文全文 PDF（伯克希尔官网）"+(d.label?"，五十周年特辑在同一份文件后半部分":"")];
+  return null}
 function hl(t,s){if(!s)return esc(t);const i=t.indexOf(s);return i<0?esc(t):esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+s.length))+"</mark>"+hl(t.slice(i+s.length),s)}
 function draw(s){
   let h="",dec=null,n=0;
@@ -71,7 +82,7 @@ function draw(s){
     if(s&&!text.includes(s)&&!String(d.y).includes(s))continue;
     n++;const k=Math.floor(yearOf(d)/10)*10;
     if(k!==dec){dec=k;h+=`<h2 class="dec" id="d${k}">${k} 年代</h2>`}
-    h+=`<details class="yr"${s?" open":""}><summary><span class="y">${esc(d.label||d.y)}</span><span><span class="th">${hl(d.th,s)}</span>${d.by?`<span class="by">${esc(d.by)}</span>`:""}</span></summary><div class="pts">${d.pts.map(p=>`<div class="k">${hl(p[0],s)}</div><div>${hl(p[1],s)}</div>`).join("")}</div></details>`;
+    h+=`<details class="yr"${s?" open":""}><summary><span class="y">${esc(d.label||d.y)}</span><span><span class="th">${hl(d.th,s)}</span>${d.by?`<span class="by">${esc(d.by)}</span>`:""}</span></summary><div class="pts">${d.pts.map(p=>`<div class="k">${hl(p[0],s)}</div><div>${hl(p[1],s)}</div>`).join("")}<div class="src">${(o=>o?`读原文：<a href="${o[0]}" target="_blank" rel="noopener">${esc(o[1])} ↗</a>`:`<span>1965—1976 年的信，伯克希尔官网没有单独收录；可读伯克希尔出版的股东信合集纸本。</span>`)(orig(d))}</div></div></details>`;
   }
   list.innerHTML=n?h:`<p class="empty">没有找到，换个词试试。</p>`;
 }
